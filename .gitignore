@@ -1,0 +1,13 @@
+venv/
+.env
+
+__pycache__/
+*.py[cod]
+
+.vscode/
+
+*.crt
+*.csr
+*.key
+*.pem
+*.key.org

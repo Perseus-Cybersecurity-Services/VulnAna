@@ -1,0 +1,36 @@
+---
+version: '3.9'
+services:
+    vulnana:
+        image: vulnana:latest
+        container_name: vulnana
+        environment:
+            - CONFIG_DECRYPT_KEY=${CONFIG_DECRYPT_KEY}
+            - APP_SECRET_KEY=${APP_SECRET_KEY}    
+        volumes:
+            - ./app/main/config/user_config.ini:/app/main/config/user_config.ini:ro
+            - ./app/main/files:/app/main/files
+            - ./app/main/logs:/app/main/logs
+        networks: 
+            net:
+                aliases:
+                    - flask-app
+            
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        volumes: 
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx/.htpasswd:/.htpasswd
+            - ./nginx/certs:/certs
+        depends_on: 
+            - vulnana
+        ports: 
+            - 80:80
+            - 443:443
+        networks: 
+            - net
+            
+networks: 
+    net:
+
